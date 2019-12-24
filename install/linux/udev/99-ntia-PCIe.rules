@@ -1,0 +1,1 @@
+SUBSYSTEM=="pci", ATTR{vendor}=="0x1e51", ATTR{device}=="0x000f", ACTION=="add", RUN+="/bin/chmod 0666 /sys/$devpath/resource0"
