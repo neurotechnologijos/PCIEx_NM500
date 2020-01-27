@@ -1,0 +1,1 @@
+-std=c++17 -falign-functions=8 -falign-jumps=8 -falign-loops=8

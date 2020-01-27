@@ -41,7 +41,7 @@ enum ntpcie_nn_error_t NTIA_API ntpcie_sys_init(struct nta_dev_handle_t  * const
   devs_list_clear(devs_list);
 
   _loc_io_handle._iox_handle = NULL;
-  _loc_io_handle._u32x_space = 0xFFFFFFFFul;
+  _loc_io_handle._u32x_space = NTIA_PCIE_INVALID_SP;
 
   io_result = ntia_pcie_io_init(&_loc_io_handle);
 
@@ -55,7 +55,7 @@ enum ntpcie_nn_error_t NTIA_API ntpcie_sys_init(struct nta_dev_handle_t  * const
   else
   {
     _loc_io_handle._iox_handle = NULL;
-    _loc_io_handle._u32x_space = 0xFFFFFFFFul;
+    _loc_io_handle._u32x_space = NTIA_PCIE_INVALID_SP;
     dev_handle_invalidate(dev_handle);
     nn_result = NTPCIE_ERROR_UNKNOWN;
   }

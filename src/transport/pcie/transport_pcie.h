@@ -25,6 +25,8 @@
 
 #define NTIA_PCIE_MEM_SIZE   (4 * 1024)
 
+#define NTIA_PCIE_INVALID_SP (0xFFFFFFFFul)
+
 //--------------- TODO: move to appropriate place
 // general PCIe dev parameters
 #ifndef NTIA_PCIE_MAX_CARDS
@@ -57,6 +59,7 @@ enum ntpcie_io_error_t
   NTPCIE_IO_ERROR_DATASIZE_MISMATCH,
   NTPCIE_IO_ERROR_ALIGN_MISMATCH,
 };
+
 
 struct pcie_io_handle_t
 {

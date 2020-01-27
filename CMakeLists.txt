@@ -10,17 +10,20 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 # Set project version
-SET(NTIA_API_MAJOR_VERSION 2019)
-SET(NTIA_API_MINOR_VERSION 01)
+SET(NTIA_API_MAJOR_VERSION 2020)
+SET(NTIA_API_MINOR_VERSION 02)
 SET(NTIA_API_PATCH_VERSION 00)
 
 project(ntia.api VERSION ${NTIA_API_MAJOR_VERSION}.${NTIA_API_MINOR_VERSION}.${NTIA_API_PATCH_VERSION})
 
-if(NOT NTIA_I_AM_DEVELOPER)
-  if(WIN32)
-    message(FATAL_ERROR "FATAL_ERROR (temporary): sorry, not yet implemented build on win32 ...")
-  endif(WIN32)
-endif(NOT NTIA_I_AM_DEVELOPER)
+set(NTIA_I_AM_DEVELOPER true)
+# disable some runtime integrity checks for (HARDWARE) debug purposes
+remove_definitions(-DNTIAPCIE_DEBUG)
+### add_compile_definitions(NTIAPCIE_DEBUG)
+
+message("** PLATFORM_ID           = " ${CMAKE_SYSTEM_NAME})
+message("** CMAKE_C_COMPILER_ID   = " ${CMAKE_C_COMPILER_ID})
+message("** CMAKE_CXX_COMPILER_ID = " ${CMAKE_CXX_COMPILER_ID})
 
 set(EXECUTABLE_OUTPUT_PATH   "${CMAKE_BINARY_DIR}/bin")
 if(NOT WIN32)
@@ -30,9 +33,18 @@ else(NOT WIN32)
 endif(NOT WIN32)
 
 if(WIN32)
-  add_definitions(-D_WIN32_WINNT=0x0601)
-  add_definitions(-DWINVER=0x0601)
+  add_definitions(-D_WIN32_WINNT=0x0A00)
+  add_definitions(-DWINVER=0x0A00)
   add_definitions(-DWIN32_LEAN_AND_MEAN)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+  include_directories("${CMAKE_SOURCE_DIR}/driver/win10-UMDFv2/api")
+  set(WIN32_LIBRARIES
+      "cfgmgr32"
+  )
+elseif(LINUX)
+    set(LINUX_LIBRARIES
+        pthread
+    )
 endif(WIN32)
 
 set(NTIA_INCLUDE_DIRECTORIES
@@ -44,6 +56,7 @@ set(COMMON_TOOLS_FILES
   "${CMAKE_SOURCE_DIR}/external/crc32.c"
   "${CMAKE_SOURCE_DIR}/external/hash32djb2.c"
   "${CMAKE_SOURCE_DIR}/external/rand_simple.c"
+  "${CMAKE_SOURCE_DIR}/external/getCPUtime.c"
   )
 
 set(PUBLIC_HEADER_FILES
@@ -58,10 +71,6 @@ set(LL_HEADER_FILES
 )
 
 include_directories(${NTIA_INCLUDE_DIRECTORIES})
-
-remove_definitions(-DNTIAPCIE_DEBUG)
-# disable some runtime integrity checks for (HARDWARE) debug purposes
-### add_compile_definitions(NTIAPCIE_DEBUG)
 
 add_subdirectory(driver)
 add_subdirectory(src)
