@@ -21,6 +21,7 @@
 #include "ntapcie_func.h"
 
 #include "rand_simple.h"
+#include "getCPUtime.h"
 
 // ------------------------- global data ----------------------------------
 
@@ -232,12 +233,12 @@ void nntest_full_test(struct nta_dev_handle_t* const dev_handle)
 
     printf("test data has been created (neurons = %" PRIu64 ")\n", neurons_count);
 
-    struct timespec time_start, time_stop;
+    double time_start, time_stop;
     uint64_t usec_duration;
 
     // learn
 
-    clock_gettime(CLOCK_MONOTONIC, &time_start);
+    time_start = getCPUTime();
     for (size_t i = 0; i < neurons_count; ++i)
     {
       cntl++;
@@ -251,10 +252,9 @@ void nntest_full_test(struct nta_dev_handle_t* const dev_handle)
         return;
       }
     }
-    clock_gettime(CLOCK_MONOTONIC, &time_stop);
+    time_stop = getCPUTime();
 
-    usec_duration = (time_stop.tv_sec - time_start.tv_sec) * 1000000;
-    usec_duration += (time_stop.tv_nsec - time_start.tv_nsec) / 1000;
+    usec_duration = (uint64_t)((time_stop - time_start) * 1000000.0);
 
     // TODO: prevent divide to ZERO
 
@@ -262,7 +262,7 @@ void nntest_full_test(struct nta_dev_handle_t* const dev_handle)
     printf(" It took %" PRIu64 " us, per vector %" PRIu64 " us on average\n", usec_duration, usec_duration / cntl);
 
     // classify
-    clock_gettime(CLOCK_MONOTONIC, &time_start);
+    time_start = getCPUTime();
     for (size_t i = 0; i < neurons_count; ++i)
     {
       struct response_neuron_state_t resp[4];
@@ -293,10 +293,9 @@ void nntest_full_test(struct nta_dev_handle_t* const dev_handle)
       }
     }
 
-    clock_gettime(CLOCK_MONOTONIC, &time_stop);
+    time_stop = getCPUTime();
 
-    usec_duration = (time_stop.tv_sec - time_start.tv_sec) * 1000000;
-    usec_duration += (time_stop.tv_nsec - time_start.tv_nsec) / 1000;
+    usec_duration = (uint64_t)((time_stop - time_start) * 1000000.0);
 
     // TODO: prevent divide to ZERO
 

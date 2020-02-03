@@ -29,7 +29,6 @@
 #include "pcie/transport_pcie.h"
 #include "transport_sysfs.h"
 
-#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wunused-function"
 #pragma GCC diagnostic ignored "-Wunused-const-variable"
@@ -386,5 +385,3 @@ static void uio_dev_handle_close_all(struct uxio_dev_handle_t* const uio)
     uio->maps[ix].size  = 0;
   }
 }
-
-#pragma GCC diagnostic pop

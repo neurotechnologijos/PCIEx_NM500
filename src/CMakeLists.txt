@@ -10,9 +10,9 @@ set(SOURCE_FILES
 
 include_directories(./transport/)
 
-set(LL_TRANSPORT_SOURCES_PCIE_WIN_UMDF2
-  "./transport/pcie/win/transport_umdf2.h"
-  "./transport/pcie/win/transport_umdf2.c"
+set(LL_TRANSPORT_SOURCES_PCIE_WIN_UMDFV2
+  "./transport/pcie/win/transport_umdfv2.h"
+  "./transport/pcie/win/transport_umdfv2.c"
 )
 set(LL_TRANSPORT_SOURCES_PCIE_LNX_SYSFS
   "./transport/pcie/lnx/transport_sysfs.h"
@@ -23,7 +23,7 @@ set(SOURCE_DIR "./")
 
 if(WIN32)
   set(LL_TRANSPORT_SOURCES
-    ${LL_TRANSPORT_SOURCES_PCIE_WIN_UMDF2}
+    ${LL_TRANSPORT_SOURCES_PCIE_WIN_UMDFV2}
   )
 else(WIN32)
   set(LL_TRANSPORT_SOURCES
@@ -40,6 +40,14 @@ add_library(ntpcie_lib OBJECT
   ${COMMON_TOOLS_FILES}
 )
 
+if(WIN32 AND $<CMAKE_C_COMPILER_ID:GNU>)
+  target_compile_options(ntpcie_lib PUBLIC "-municode")
+endif(WIN32 AND $<CMAKE_C_COMPILER_ID:GNU>)
+
+if(WIN32)
+  target_compile_definitions(ntpcie_lib PUBLIC "UNICODE" "_UNICODE")
+endif(WIN32)
+
 target_sources(ntpcie_lib PRIVATE ${LL_TRANSPORT_SOURCES})
 
 set_target_properties(ntpcie_lib PROPERTIES POSITION_INDEPENDENT_CODE 1)
@@ -50,17 +58,17 @@ add_library(${LIB_NAME_STATIC} STATIC
 
 add_library(${LIB_NAME_SHARED} SHARED
   $<TARGET_OBJECTS:ntpcie_lib>
-  $<$<PLATFORM_ID:WIN32>:${CMAKE_SOURCE_DIR}/version.o>
+  $<$<PLATFORM_ID:Windows>:${CMAKE_SOURCE_DIR}/version.rc>
 )
 
 target_compile_definitions(${LIB_NAME_SHARED} PRIVATE NTIA_API_DLL NTIA_API_DLL_EXPORTS)
 
 target_link_libraries(${LIB_NAME_STATIC}
-  ${DEPENDENCIES}
+  $<$<PLATFORM_ID:Windows>:${WIN32_LIBRARIES}>
 )
 
 target_link_libraries(${LIB_NAME_SHARED}
-  ${DEPENDENCIES}
+  $<$<PLATFORM_ID:Windows>:${WIN32_LIBRARIES}>
 )
 
 install(TARGETS ${LIB_NAME_STATIC} DESTINATION ${LIBRARY_OUTPUT_PATH})

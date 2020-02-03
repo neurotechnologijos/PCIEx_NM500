@@ -1,0 +1,93 @@
+[Version]
+Signature="$Windows NT$"
+Class=%ClassName%
+ClassGuid={52bf6a15-6e54-41a9-9f2f-c42f5de2982b}
+Provider=%ManufacturerName%
+CatalogFile=ntia-pcie-UMDFv2.cat
+DriverVer=
+
+[Manufacturer]
+%ManufacturerName%=DeviceList-v1,NTx86,NTamd64
+%ManufacturerName%=DeviceList-v2,NTx86,NTamd64
+
+[ClassInstall32]
+AddReg=ntia-pcie-class-RegistryAdd
+
+[ntia-pcie-class-RegistryAdd]
+HKR,,,,%ClassName%
+HKR,,Icon,,"-10"
+
+[SourceDisksFiles]
+ntia-pcie-UMDFv2.dll=1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[Install.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD-ServiceInstall
+
+[Install.NT.CoInstallers]
+AddReg=CoInstallers-AddReg
+
+[Install.NT.Wdf]
+UmdfService=ntia.NN.pcie.v1,ntia-NN-pcie-v1-install
+UmdfServiceOrder=ntia.NN.pcie.v1
+UmdfDirectHardwareAccess=AllowDirectHardwareAccess
+UmdfRegisterAccessMode=RegisterAccessUsingUserModeMapping
+
+[ntia-NN-pcie-v1-install]
+UmdfLibraryVersion=$UMDFVERSION$ 
+ServiceBinary=%12%\UMDF\ntia-pcie-UMDFv2.dll
+
+[WUDFRD-ServiceInstall]
+DisplayName   = %WudfRdDisplayName%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %12%\WUDFRd.sys
+
+[CoInstallers-AddReg]
+HKR,,CoInstallers32,0x00010000,"WUDFCoinstaller.dll"
+
+[UpdateRegistryDevice]
+; Message Signalled Interrupts
+HKR,,"MSICapability", 0x00010001, 0x00400000
+HKR,,"MSINeeded", 0x00010001, 0x04
+HKR,,"EnableMSIInterrupts", 0x00010001, 0x01
+HKR,"Interrupt Management",0x00000010
+HKR,"Interrupt Management\MessageSignaledInterruptProperties",0x00000010
+HKR,"Interrupt Management\MessageSignaledInterruptProperties",MSISupported,0x00010001,1
+HKR,"Interrupt Management\MessageSignaledInterruptProperties","MessageNumberLimit", 0x00010001, 8
+
+
+[Install.NT.HW]
+AddReg=UpdateRegistryDevice
+
+[Install.NT]
+CopyFiles=UM-driver-files
+
+[DestinationDirs]
+UM-driver-files=12,UMDF ; copy to drivers\UMDF
+
+[UM-driver-files]
+ntia-pcie-UMDFv2.dll
+
+[Strings]
+ManufacturerName="NeuroTechnologijos UAB"
+ClassName="NTIA PCIe NN Coproc"
+DiskName="NTIA-PCIe-UMDFv2 Installation Disk"
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
+DeviceName="NTIA PCIe NN accelerator"
+
+
+; supported devices list
+
+[DeviceList-v1.NTx86]
+"NTIA PCIe NN accelerator v1"=Install, PCI\VEN_1E51&DEV_000F ; NT Adaptive PCIe NT.00015.00.00 & NT.00015.00.00_v2
+[DeviceList-v1.NTamd64]
+"NTIA PCIe NN accelerator v1"=Install, PCI\VEN_1E51&DEV_000F ; NT Adaptive PCIe NT.00015.00.00 & NT.00015.00.00_v2
+
+[DeviceList-v2.NTx86]
+"NTIA PCIe NN accelerator v2"=Install, PCI\VEN_1E51&DEV_001F ; nonexistent (yet) device
+[DeviceList-v2.NTamd64]
+"NTIA PCIe NN accelerator v2"=Install, PCI\VEN_1E51&DEV_001F ; nonexistent (yet) device

@@ -3,8 +3,12 @@
 static uint32_t seed_rand_simple = 0x7267FA76UL;
 
 
-#ifdef __amd64__
+#if defined(__amd64__) || defined(_M_X64)
+#ifdef _MSC_VER
+#include <intrin.h>
+#else
 #include <x86intrin.h>
+#endif // _MSC_VER
 
 void rand_simple_set_seed_auto(void)
 {

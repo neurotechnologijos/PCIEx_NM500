@@ -1,0 +1,28 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ntia-pcie-UMDFv2", "ntia-pcie-UMDFv2.vcxproj", "{09E3819A-725F-4B02-A787-D2E961465745}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		debug|x64 = debug|x64
+		release|x64 = release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09E3819A-725F-4B02-A787-D2E961465745}.debug|x64.ActiveCfg = debug|x64
+		{09E3819A-725F-4B02-A787-D2E961465745}.debug|x64.Build.0 = debug|x64
+		{09E3819A-725F-4B02-A787-D2E961465745}.release|x64.ActiveCfg = release|x64
+		{09E3819A-725F-4B02-A787-D2E961465745}.release|x64.Build.0 = release|x64
+		{0A4CF2B5-CBF9-4A82-9683-BDB97C8F892A}.debug|x64.ActiveCfg = debug|x64
+		{0A4CF2B5-CBF9-4A82-9683-BDB97C8F892A}.debug|x64.Build.0 = debug|x64
+		{0A4CF2B5-CBF9-4A82-9683-BDB97C8F892A}.release|x64.ActiveCfg = release|x64
+		{0A4CF2B5-CBF9-4A82-9683-BDB97C8F892A}.release|x64.Build.0 = release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA9CB82D-FD03-498F-97D3-8B1694A72B4A}
+	EndGlobalSection
+EndGlobal
