@@ -58,7 +58,8 @@ extern "C"
    */
   enum ntpcie_nn_error_t NTIA_API ntpcie_device_open(struct nta_dev_handle_t * const dev_handle,
                                                      const uint16_t pci_bus,
-                                                     const uint16_t pci_slot);
+                                                     const uint16_t pci_slot,
+                                                     const uint16_t pci_func);
   /**
    *  @brief      PCIe card close
    *  @details    TODO

@@ -73,7 +73,8 @@ int main(int argc, const char* const argv[])
 
   nn_result = ntpcie_device_open(&nta_dev_handle,
                                  devs_list.devices[device_select].bus,
-                                 devs_list.devices[device_select].slot);
+                                 devs_list.devices[device_select].slot,
+                                 devs_list.devices[device_select].func);
   if (nn_result != NTPCIE_ERROR_SUCCESS)
   {
     puts("error: ntpcie_device_open failed");

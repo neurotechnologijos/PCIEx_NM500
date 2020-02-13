@@ -146,7 +146,8 @@ ret_result:
 
 enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const io_handle,
                                                 const uint16_t pci_bus,
-                                                const uint16_t pci_slot)
+                                                const uint16_t pci_slot,
+                                                const uint16_t pci_func)
 {
   enum ntpcie_io_error_t io_result = NTPCIE_IO_ERROR_SUCCESS;
   int uio_dev_file_handle = (-1);
@@ -161,7 +162,6 @@ enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const i
 
   // used fixed BAR0 only and func=0
   const size_t map_ix = 0;
-  const uint16_t pci_func = 0;
 
   char devmem_sys_fn[256];
   snprintf(devmem_sys_fn, 256, devmem_sys_fn_template, pci_bus, pci_slot, pci_func, "resource0");

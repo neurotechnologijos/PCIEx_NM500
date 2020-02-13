@@ -25,7 +25,7 @@ int main(int, const char* const*)
   if (run_enable)
   {
     ntpcie_sys_init(&nta_dev_handle, &devs_list);
-    ntpcie_device_open(&nta_dev_handle, 0, 0);
+    ntpcie_device_open(&nta_dev_handle, 0, 0, 0);
     ntpcie_device_close(&nta_dev_handle);
     ntpcie_sys_deinit(&nta_dev_handle);
   }

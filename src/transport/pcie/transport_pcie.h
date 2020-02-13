@@ -109,7 +109,8 @@ extern "C"
    */
   enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const io_handle,
                                                   const uint16_t pci_bus,
-                                                  const uint16_t pci_slot);
+                                                  const uint16_t pci_slot,
+                                                  const uint16_t pci_func);
 
   /**
    * @brief         close PCIe device and destroy device handle

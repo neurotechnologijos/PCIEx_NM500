@@ -94,7 +94,8 @@ enum ntpcie_nn_error_t NTIA_API ntpcie_sys_deinit(struct nta_dev_handle_t* const
 
 enum ntpcie_nn_error_t NTIA_API ntpcie_device_open(struct nta_dev_handle_t * const dev_handle,
                                                    const uint16_t pci_bus,
-                                                   const uint16_t pci_slot)
+                                                   const uint16_t pci_slot,
+                                                   const uint16_t pci_func)
 {
   enum ntpcie_io_error_t io_result = NTPCIE_IO_ERROR_SUCCESS;
   enum ntpcie_nn_error_t nn_result;
@@ -104,7 +105,7 @@ enum ntpcie_nn_error_t NTIA_API ntpcie_device_open(struct nta_dev_handle_t * con
     return NTPCIE_ERROR_INVALID_HANDLE;
   }
 
-  io_result = ntia_pcie_io_device_open(dev_handle->_iox_handle, pci_bus, pci_slot);
+  io_result = ntia_pcie_io_device_open(dev_handle->_iox_handle, pci_bus, pci_slot, pci_func);
   if (io_result != NTPCIE_IO_ERROR_SUCCESS)
   {
     return NTPCIE_ERROR_CARD_OPEN;

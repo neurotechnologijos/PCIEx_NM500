@@ -57,7 +57,10 @@ static struct uxio_device_list_t uio_dev_list;
 static bool uio_dev_scan_system(struct uxio_device_list_t * const dev_list, GUID const* const umdfv2_iface_guid);
 static void uio_dev_handle_reset(struct uxio_device_list_t* const dev_list);
 static void uio_dev_handle_close_all(struct uxio_device_list_t* const dev_list);
-static size_t uio_dev_handle_find(struct uxio_device_list_t const* const dev_list, const uint16_t pci_bus, const uint16_t pci_slot);
+static size_t uio_dev_handle_find(struct uxio_device_list_t const* const dev_list,
+                                  const uint16_t pci_bus,
+                                  const uint16_t pci_slot,
+                                  const uint16_t pci_func);
 
 static bool uio_dev_rd32(HANDLE sys_dev_handle,
                          const uint32_t offset,
@@ -157,7 +160,10 @@ ret_result:
     return io_result;
 }
 
-enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const io_handle, const uint16_t pci_bus, const uint16_t pci_slot)
+enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const io_handle,
+                                                const uint16_t pci_bus,
+                                                const uint16_t pci_slot,
+                                                const uint16_t pci_func)
 {
     enum ntpcie_io_error_t io_result = NTPCIE_IO_ERROR_SUCCESS;
 
@@ -168,7 +174,7 @@ enum ntpcie_io_error_t ntia_pcie_io_device_open(struct pcie_io_handle_t* const i
     }
 
     struct uxio_device_list_t * const int_devs_list = io_handle->_iox_handle;
-    const size_t device_ix = uio_dev_handle_find(int_devs_list, pci_bus, pci_slot);
+    const size_t device_ix = uio_dev_handle_find(int_devs_list, pci_bus, pci_slot, pci_func);
 
     if (device_ix == NTIA_PCIE_INVALID_SP || int_devs_list->devices[device_ix]._iox_handle != INVALID_HANDLE_VALUE)
     {
@@ -328,13 +334,17 @@ ret_result:
 }
 
 /// internal functions
-static size_t uio_dev_handle_find(struct uxio_device_list_t const* const dev_list, const uint16_t pci_bus, const uint16_t pci_slot)
+static size_t uio_dev_handle_find(struct uxio_device_list_t const* const dev_list,
+                                  const uint16_t pci_bus,
+                                  const uint16_t pci_slot,
+                                  const uint16_t pci_func)
 {
     size_t device_ix = NTIA_PCIE_INVALID_SP;
     for (size_t ix = 0; ix < dev_list->devices_active; ++ix)
     {
         if (dev_list->devices[ix].device_bus_address.bus == pci_bus
-         && dev_list->devices[ix].device_bus_address.slot == pci_slot)
+         && dev_list->devices[ix].device_bus_address.slot == pci_slot
+         && dev_list->devices[ix].device_bus_address.func == pci_func)
         {
             device_ix = ix;
             goto ret_result;
