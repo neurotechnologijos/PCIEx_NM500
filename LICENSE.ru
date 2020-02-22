@@ -1,6 +1,6 @@
 Лицензия MIT
 
-Copyright (c) 2017-2019 NeuroTechnologijos UAB
+Copyright (c) 2017-2020 NeuroTechnologijos UAB
 (https://www.neurotechnologijos.com)
 
 Данная лицензия разрешает лицам, получившим копию данного программного
