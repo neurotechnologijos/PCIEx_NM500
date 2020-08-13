@@ -15,6 +15,12 @@ void rand_simple_set_seed_auto(void)
   seed_rand_simple = __rdtsc() & 0x00000000FFFFFFFFUL;
 }
 
+#else // not __amd64__
+
+void rand_simple_set_seed_auto(void)
+{
+}
+
 #endif // __amd64__
 
 

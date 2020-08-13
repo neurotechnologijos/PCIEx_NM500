@@ -10,9 +10,9 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 # Set project version
-SET(NTIA_API_MAJOR_VERSION 2020)
-SET(NTIA_API_MINOR_VERSION 02)
-SET(NTIA_API_PATCH_VERSION 00)
+set(NTIA_API_MAJOR_VERSION 2020)
+set(NTIA_API_MINOR_VERSION 02)
+set(NTIA_API_PATCH_VERSION 00)
 
 project(ntia.api VERSION ${NTIA_API_MAJOR_VERSION}.${NTIA_API_MINOR_VERSION}.${NTIA_API_PATCH_VERSION})
 
@@ -21,15 +21,58 @@ set(NTIA_I_AM_DEVELOPER true)
 remove_definitions(-DNTIAPCIE_DEBUG)
 ### add_compile_definitions(NTIAPCIE_DEBUG)
 
-message("** PLATFORM_ID           = " ${CMAKE_SYSTEM_NAME})
-message("** CMAKE_C_COMPILER_ID   = " ${CMAKE_C_COMPILER_ID})
-message("** CMAKE_CXX_COMPILER_ID = " ${CMAKE_CXX_COMPILER_ID})
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_BUILD_TYPE)
 
-set(EXECUTABLE_OUTPUT_PATH   "${CMAKE_BINARY_DIR}/bin")
+message("** CMAKE_BUILD_TYPE       = " ${CMAKE_BUILD_TYPE})
+message("** PLATFORM_ID            = " ${CMAKE_SYSTEM_NAME})
+message("** CMAKE_SYSTEM_PROCESSOR = " ${CMAKE_SYSTEM_PROCESSOR})
+message("** CMAKE_C_COMPILER_ID    = " ${CMAKE_C_COMPILER_ID})
+message("** CMAKE_CXX_COMPILER_ID  = " ${CMAKE_CXX_COMPILER_ID})
+
+if     (CMAKE_C_COMPILER_ID STREQUAL "Clang")
+  # using Clang
+  set(_COMPILER_GNU_LIKE true)
+elseif (CMAKE_C_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  set(_COMPILER_GNU_LIKE true)
+elseif (CMAKE_C_COMPILER_ID STREQUAL "Intel")
+  # using Intel C/C++
+  set(_COMPILER_GNU_LIKE false)
+elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C/C++
+  set(_COMPILER_GNU_LIKE false)
+endif()
+
+if(_COMPILER_GNU_LIKE) ### gnu/gcc and llvm/clang
+  if     (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm")
+    set(_MACHINE_ARCH "-mabi=aapcs-linux -march=armv7-a -mfloat-abi=hard -mfpu=neon-vfpv4")
+  elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+    set(_MACHINE_ARCH "-mabi=lp64 -march=armv8-a+simd")
+  elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
+    set(_MACHINE_ARCH "-mabi=lp64d -march=rv64imafdc")
+  elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+    set(_MACHINE_ARCH "-march=skylake")
+  else()
+    set(_MACHINE_ARCH "")
+  endif()
+
+  set(CMAKE_C_FLAGS   ${_MACHINE_ARCH})
+  set(CMAKE_CXX_FLAGS ${_MACHINE_ARCH})
+
+  set(CMAKE_C_FLAGS_RELEASE   "-O3 -g0 -fomit-frame-pointer")
+  set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g0 -fomit-frame-pointer")
+
+  set(CMAKE_C_FLAGS_DEBUG     "-Og -ggbd3")
+  set(CMAKE_CXX_FLAGS_DEBUG   "-Og -ggbd3")
+endif(_COMPILER_GNU_LIKE)
+
+set(EXECUTABLE_OUTPUT_PATH   "bin")
 if(NOT WIN32)
-  set(LIBRARY_OUTPUT_PATH    "${CMAKE_BINARY_DIR}/lib")
+  set(LIBRARY_OUTPUT_PATH    "lib")
 else(NOT WIN32)
-  set(LIBRARY_OUTPUT_PATH    "${CMAKE_BINARY_DIR}/bin")
+  set(LIBRARY_OUTPUT_PATH    "bin")
 endif(NOT WIN32)
 
 if(WIN32)
