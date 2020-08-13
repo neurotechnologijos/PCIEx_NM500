@@ -5,11 +5,11 @@
 // *INDENT-OFF*
 // clang-format off
 
-#define VER_FILEVERSION           2020, 02, 22, 2567
-#define VER_FILEVERSION_STR      "2020.02.22.2567\0"
+#define VER_FILEVERSION           2020, 08, 14, 6354
+#define VER_FILEVERSION_STR      "2020.08.14.6354\0"
 
-#define VER_PRODUCTVERSION        2020, 02, 22, 2567
-#define VER_PRODUCTVERSION_STR   "2020.02.22.2567\0"
+#define VER_PRODUCTVERSION        2020, 08, 14, 6354
+#define VER_PRODUCTVERSION_STR   "2020.08.14.6354\0"
 
 #define VER_COMPANYNAME_STR      "NeuroTechnologijos UAB"
 #define VER_FILEDESCRIPTION_STR  "NTIA PCIe Co-processor HL library"
