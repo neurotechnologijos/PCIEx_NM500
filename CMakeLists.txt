@@ -64,8 +64,8 @@ if(_COMPILER_GNU_LIKE) ### gnu/gcc and llvm/clang
   set(CMAKE_C_FLAGS_RELEASE   "-O3 -g0 -fomit-frame-pointer")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g0 -fomit-frame-pointer")
 
-  set(CMAKE_C_FLAGS_DEBUG     "-Og -ggbd3")
-  set(CMAKE_CXX_FLAGS_DEBUG   "-Og -ggbd3")
+  set(CMAKE_C_FLAGS_DEBUG     "-Og -ggdb3")
+  set(CMAKE_CXX_FLAGS_DEBUG   "-Og -ggdb3")
 endif(_COMPILER_GNU_LIKE)
 
 set(EXECUTABLE_OUTPUT_PATH   "bin")
